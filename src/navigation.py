@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import math
 import rospy
 from std_msgs.msg import String
 from nav_msgs.msg import Odometry
@@ -54,9 +55,20 @@ class Navigation:
         try:
             rospy.loginfo("I heard %s",data)
             rospy.loginfo(data.pose.position.x)
+            self.send_move_command(data.pose.position)
         except:
             rospy.loginfo("Failed to extract position")
         return None
+
+    def send_move_command(self, location):
+        rospy.loginfo("Move not implemented")
+        dist = math.sqrt((self.goal["x"] - location["x"])**2 + (self.goal["y"] - location["y"])**2)
+
+        if dist > 0.1:
+            rospy.loginfo("i should be moving, distance to goal %s", dist)
+            pass
+        # calc difference of
+        pass
 
     def start_nav_goal_service(self):
         return rospy.Service('/navigation/goal', TaskCall, self.add_nav_goal)
